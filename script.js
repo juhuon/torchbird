@@ -1,41 +1,72 @@
-// 切换滚动图片
+// 获取所有轮播图和推荐文章标题的元素
 
-var slideIndex = 1;
+var slides = document.querySelectorAll(".mySlides");
 
-showSlide(slideIndex);
+var titles = document.querySelectorAll(".text");
 
-function nextSlide() {
+// 定义当前展示的轮播图和推荐文章标题的索引
 
-	showSlide(slideIndex += 1);}
+var slideIndex = 0;
 
-function prevSlide() {
+// 显示第一张轮播图和推荐文章标题
 
-	showSlide(slideIndex -= 1);
+showSlides(slideIndex);
+
+// 设置定时器，每隔5秒切换一张轮播图和推荐文章标题
+
+setInterval(function() {
+
+  slideIndex++;
+
+  if (slideIndex >= slides.length) {
+
+    slideIndex = 0;
+
+  }
+
+  showSlides(slideIndex);
+
+}, 5000);
+
+// 显示指定索引的轮播图和推荐文章标题
+
+function showSlides(index) {
+
+  // 隐藏所有轮播图和推荐文章标题
+
+  for (var i = 0; i < slides.length; i++) {
+
+    slides[i].style.display = "none";
+
+    titles[i].style.display = "none";
+
+  }
+
+  // 显示指定索引的轮播图和推荐文章标题
+
+  slides[index].style.display = "block";
+
+  titles[index].style.display = "block";
 
 }
 
-function showSlide(n) {
+// 下一张轮播图和推荐文章标题
 
-	var slides = document.getElementsByClassName("slide");
+function plusSlides(n) {
 
-	if (n > slides.length) {
+  slideIndex += n;
 
-		slideIndex = 1;
+  if (slideIndex < 0) {
 
-	}
+    slideIndex = slides.length - 1;
 
-	if (n < 1) {
+  } else if (slideIndex >= slides.length) {
 
-		slideIndex = slides.length;
+    slideIndex = 0;
 
-	}
+  }
 
-	for (var i = 0; i < slides.length; i++) {
-
-		slides[i].classList.remove("active");
-
-	}
-
-	slides[slideIndex-1].classList.add("active");
+  showSlides(slideIndex);
 
 }
+
