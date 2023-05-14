@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>历史上的今天</title>
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+		h1 {
+			text-align: center;
+			margin-top: 50px;
+		}
+		.container {
+			width: 800px;
+			margin: 0 auto;
+		}
+		.card {
+			padding: 20px;
+			margin-bottom: 20px;
+			background-color: #f8f8f8;
+			box-shadow: 0 2px 4px #ccc;
+		}
+		.date {
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+		.content {
+			font-size: 16px;
+			line-height: 1.5;
+			text-indent: 2em;
+			color: #666;
+		}
+	</style>
+</head>
+<body>
+	<h1>历史上的今天</h1>
+	<div class="container"></div>
+	<script>
+		$(function() {
+			$.ajax({
+				url: "https://api.ooomn.com/api/history?format=json",
+				type: "GET",
+				dataType: "json",
+				success: function(data) {
+					if (data.code == "200") {
+						var container = $(".container");
+						var card = $("<div class='card'></div>");
+						var date = $("<div class='date'>" + data.data + "</div>");
+						var content = $("<div class='content'>" + data.content + "</div>");
+						card.append(date).append(content);
+						container.append(card);
+					} else {
+						alert("获取历史信息失败！");
+					}
+				},
+				error: function() {
+					alert("获取历史信息失败！");
+				}
+			});
+		});
+	</script>
+</body>
+</html>
