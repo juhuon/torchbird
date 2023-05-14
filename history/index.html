@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>历史上的今天</title>
+
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.10.0-11/css/all.min.css">
+
+    <style>
+
+        body {
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: Arial, sans-serif;
+
+            background-color: #f4f4f4;
+
+        }
+
+        .navbar {
+
+            background: #007bff;
+
+            color: #ffffff;
+
+        }
+
+        .navbar-brand {
+
+            font-weight: bold;
+
+        }
+
+        .container {
+
+            margin-top: 50px;
+
+        }
+
+        h1 {
+
+            margin-top: 20px;
+
+        }
+
+        .card {
+
+            margin-bottom: 20px;
+
+        }
+
+        .card-title {
+
+            font-size: 24px;
+
+        }
+
+        .card-text {
+
+            color: #6c757d;
+
+            margin-top: 10px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+
+        <div class="container">
+
+            <a class="navbar-brand" href="#">历史上的今天</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+        </div>
+
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-4">
+
+                <h1>历史上的今天</h1>
+
+                <form>
+
+                    <div class="form-group">
+
+                        <label>选择日期：</label>
+
+                        <div class="input-group">
+
+                            <select id="history-month" class="form-control">
+
+                                <option value="1">1月</option>
+
+                                <option value="2">2月</option>
+
+                                <option value="3">3月</option>
+
+                                <option value="4">4月</option>
+
+                                <option value="5">5月</option>
+
+                                <option value="6">6月</option>
+
+                                <option value="7">7月</option>
+
+                                <option value="8">8月</option>
+
+                                <option value="9">9月</option>
+
+                                <option value="10">10月</option>
+
+                                <option value="11">11月</option>
+
+                                <option value="12">12月</option>
+
+                            </select>
+
+                            <select id="history-day" class="form-control">
+
+                                <option value="1">1日</option>
+
+                                <option value="2">2日</option>
+
+                                <option value="3">3日</option>
+
+                                <option value="4">4日</option>
+
+                                <option value="5">5日</option>
+
+                                <option value="6">6日</option>
+
+                                <option value="7">7日</option>
+
+                                <option value="8">8日</option>
+
+                                <option value="9">9日</option>
+
+                                <option value="10">10日</option>
+
+                                <option value="11">11日</option>
+
+                                <option value="12">12日</option>
+
+                                <option value="13">13日</option>
+
+                                <option value="14">14日</option>
+
+                                <option value="15">15日</option>
+
+                                <option value="16">16日</option>
+
+                                <option value="17">17日</option>
+
+                                <option value="18">18日</option>
+
+                                <option value="19">19日</option>
+
+                                <option value="20">20日</option>
+
+                                <option value="21">21日</option>
+
+                                <option value="22">22日</option>
+
+                                <option value="23">23日</option>
+
+                                <option value="24">24日</option>
+
+                                <option value="25">25日</option>
+
+                                <option value="26">26日</option>
+
+                                <option value="27">27日</option>
+
+                                <option value="28">28日</option>
+
+                                <option value="29">29日</option>
+
+                                <option value="30">30日</option>
+
+                                <option value="31">31日</option>
+
+                            </select>
+
+                            <div class="input-group-append">
+
+                                <button id="query-btn" class="btn btn-primary" type="button">查询</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="col-md-8" id="history-container">
+
+                <!-- 查询结果将在此处显示 -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+    <script>
+
+        $(function () {
+
+            // 默认查询今天的历史事件
+
+            var today = new Date();
+
+            var month = today.getMonth() + 1;
+
+            var day = today.getDate();
+
+            queryHistory(month, day);
+
+            // 监听查询按钮点击事件
+
+            $("#query-btn").click(function () {
+
+                var month = $("#history-month").val();
+
+                var day = $("#history-day").val();
+
+                queryHistory(month, day);
+
+            });
+
+        });
+
+        function queryHistory(month, day) {
+
+            // 向API接口发送GET请求以获取所选日期的历史事件数据
+
+            $.getJSON("https://api.ooomn.com/api/history?date=2023-" + month + "-" + day, function (data) {
+
+                // 将历史事件数据添加到容器中
+
+                var container = $("#history-container");
+
+                container.empty();
+
+                if (data.code === "200") {
+
+                    var title = data.data + "： " + data.content;
+
+                    var card = $("<div>")
+
+                        .addClass("card")
+
+                        .appendTo(container);
+
+                    var cardBody = $("<div>")
+
+                        .addClass("card-body")
+
+                        .appendTo(card);
+
+                    $("<h5>")
+
+                        .addClass("card-title")
+
+                        .text(title)
+
+                        .appendTo(cardBody);
+
+                    $("<p>")
+
+                        .addClass("card-text")
+
+                        .html("<a href='https://www.baidu.com/s?wd=" + encodeURIComponent(data.content) + "' target='_blank'>去百度搜索</a>")
+
+                        .appendTo(cardBody);
+
+                } else {
+
+                    var card = $("<div>")
+
+                        .addClass("card")
+
+                        .appendTo(container);
+
+                    var cardBody = $("<div>")
+
+                        .addClass("card-body")
+
+                        .appendTo(card);
+
+                    $("<h5>")
+
+                        .addClass("card-title")
+
+                        .text("很抱歉，没有查询到历史事件")
+
+                        .appendTo(cardBody);
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+
